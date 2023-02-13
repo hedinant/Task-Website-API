@@ -33,6 +33,7 @@ public class Task implements Serializable {
     @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
     private Person owner;
 
+    // TODO а зачем дату в строчку то засовывать, искать же потом не удобно.
     @Column(name = "to_do_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime toDoTime;

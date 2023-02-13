@@ -19,6 +19,7 @@ public class AuthExceptionHandlerAdvice {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ResponseException> badPasswordHandler(BadCredentialsException ex) {
+        //TODO тогде уже     UNAUTHORIZED(401, HttpStatus.Series.CLIENT_ERROR, "Unauthorized"),
         return new ResponseEntity(new ResponseException(ex.getMessage(), new Date()), HttpStatus.BAD_REQUEST);
     }
 

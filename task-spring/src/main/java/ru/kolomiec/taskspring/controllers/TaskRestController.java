@@ -33,6 +33,8 @@ public class TaskRestController {
             @ApiResponse(responseCode = "400", description = "person does not have tasks")
     })
     public ResponseEntity<List<Task>> getAllTasks(@AuthenticationPrincipal PersonDetailsSecurityEntity authPerson) {
+        //TODO это оформляется короче через @ResponseBody. 400ка тут вроде пока не кидается.
+        // лучше идти по id
         return ResponseEntity.ok(taskService.getAllTaskByPersonUsername(authPerson.getUsername()));
     }
 
@@ -42,6 +44,7 @@ public class TaskRestController {
             @ApiResponse(responseCode = "200", description = "task is added"),
             @ApiResponse(responseCode = "400", description = "not valid task")
     })
+    // TODO стоит разделить create и update. Это обычно даже разные методы PUT и POST
     public ResponseEntity<ResponseMessageDTO> addNewTaskToPerson(@RequestBody @Valid TaskDTO taskDTO,
                                                                  @AuthenticationPrincipal PersonDetailsSecurityEntity authPerson) {
         System.out.println(taskDTO.toString());
@@ -58,6 +61,7 @@ public class TaskRestController {
     public ResponseEntity<ResponseMessageDTO> deletePersonTask(@AuthenticationPrincipal PersonDetailsSecurityEntity authPerson,
                                                                @PathVariable("taskId") Long taskId) {
         taskService.deleteTaskOwnedByPerson(authPerson, taskId);
+        // TODO "task with taskId %d is deleted".formatted(taskId)
         return ResponseEntity.ok(new ResponseMessageDTO(new StringBuilder("task with taskId ").append(taskId).append("is deleted").toString()));
     }
 }

@@ -23,6 +23,7 @@ public class AuthRestControllerTest extends ControllerTestBase {
     @Autowired
     private PersonRepository personRepository;
 
+    // TODO это не юнит тесты, их лучше держать отдельно.
     @Test
     public void shouldRegistrationTestPerson() throws Exception {
         MvcResult result = registerPerson(testPerson);

@@ -27,21 +27,30 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
     private final PersonFacade personFacade;
+
     @Override
     public Person findByUsername(String username) {
         return personRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username does not exist"));
+        /* TODO читается довольно тяжело, стоит структурировать.
+        return personRepository.findByUsername(username).orElseThrow(
+            () -> new UsernameNotFoundException("Username does not exist"));
+         */
+
     }
 
     @Override
     @Transactional
     public Person savePerson(Person person) {
+        // TODO похоже на метод работающий с данными персоны.
         person.setPassword(encodePassword(person.getPassword()));
+
         return personRepository.save(person);
     }
 
     @Override
     @Transactional
     public Person savePerson(PersonRegistrationDTO personRegistration) {
+        // TODO и тут его можно дернуть.
         personRegistration.setPassword(encodePassword(personRegistration.getPassword()));
         return personRepository.save(personFacade.fromRegistrationDTOtoPerson(personRegistration));
     }

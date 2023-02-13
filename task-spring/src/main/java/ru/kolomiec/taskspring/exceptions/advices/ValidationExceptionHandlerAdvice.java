@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.validation.ConstraintViolation;
 import org.hibernate.exception.ConstraintViolationException;
@@ -34,6 +35,13 @@ public class ValidationExceptionHandlerAdvice {
 
     private List<ResponseException> convertFieldErrorsToResponseExceptionList(List<FieldError> errors) {
         List<ResponseException> responseExceptionsList = new ArrayList<>();
+        // TODO errors.forEach(a -> {
+        /* или
+           errors.stream().map(
+                fieldError -> new ResponseException(a.getField() + " " + a.getDefaultMessage(), new Date()))
+                .collect(Collectors.toList());
+         Это с точки зрения stream api более правильный стиль.
+         */
         errors.stream().forEach(a -> {
             responseExceptionsList.add(new ResponseException(a.getField() + " " + a.getDefaultMessage(), new Date()));
         });

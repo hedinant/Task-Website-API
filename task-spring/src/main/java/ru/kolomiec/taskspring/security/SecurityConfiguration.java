@@ -41,6 +41,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    // TODO не уверен что это удобно иметь бином. Статика утил класс могут показать себя лучше.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);

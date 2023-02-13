@@ -31,11 +31,13 @@ public class TaskServiceImpl implements TaskService {
     private final TaskFacade taskFacade;
     @Override
     public List<Task> getAllTaskByUserId(Long id) {
+        // TODO странный метод, скореевсего будет загружен Person и у него можно взять таски.
         return taskRepository.findAllByOwnerId(id).orElseThrow(() -> new EmptyPersonTasksException("you have not tasks"));
     }
 
     @Override
     public List<Task> getAllTaskByPersonUsername(String username) {
+        // TODO странный метод, лучше идти по id он бычно есть под руками.
         List<Task> personTasks = taskRepository.findAllByOwnerUsername(username).get();
         checkListTaskIsEmpty(personTasks);
         return personTasks;
@@ -45,7 +47,12 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public void saveTaskToPerson(PersonDetailsSecurityEntity authenticatedPerson, TaskDTO taskDTO) {
         Task newTaskToPerson = taskFacade.fromTaskDTOToTask(taskDTO);
+        // TODO в  authenticatedPerson   private final Person person;
+        // если нужен объект в контексте транзакции его лучше достать по id
+        // хотя хиб увидев person не в транзакции как Owner пропишет связь.
         newTaskToPerson.setOwner(personService.findByUsername(authenticatedPerson.getUsername()));
+        // TODO тут легко затереть данные в базе про росте сложности модели из за того что их не таскали на клиента.
+        // я бы сразу читал в транзакции и менял. .save все таки в основном синоним persist те при создании нового объекта.
         taskRepository.save(newTaskToPerson);
     }
 
@@ -62,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(taskId);
     }
 
+    // TODO tasks due time now
     public List<Task> getAllTasksWhichToDoTimeIsCurrentTime() {
         List<Task> tasksWithCurrentDate = getAllTasksWhichToDoTimeIsCurrentDate();
         List<Task> tasksWithCurrentTime = new ArrayList<>();
@@ -69,6 +77,7 @@ public class TaskServiceImpl implements TaskService {
         DateTimeFormatter hoursAndMinutesFormat = DateTimeFormatter.ofPattern("HH:mm");
         if (tasksWithCurrentDate != null) {
             for (Task t : tasksWithCurrentDate) {
+                //TODO надо работать с интервалами времени.
                 if (hoursAndMinutesFormat.format(t.getToDoTime()).equals(currentTime))
                     tasksWithCurrentTime.add(t);
             }

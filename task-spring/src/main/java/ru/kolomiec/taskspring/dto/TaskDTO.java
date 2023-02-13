@@ -13,6 +13,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/*TODO пока можель простая можно обходиться одним классом и мапингом в JSON
+Когда она разростется это приведет к необходимости написать нечто нетривиальное для умного мапинга
+или таки перейти к DTO там где это реально понадобится.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

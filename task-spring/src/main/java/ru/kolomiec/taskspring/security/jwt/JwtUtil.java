@@ -11,6 +11,8 @@ import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
 
+// TODO это действительно util класс, его не стоитделать компонентом, лучше использовать как статику как собственно JWT
+
 @Component
 public class JwtUtil {
 
